@@ -1,0 +1,16 @@
+{
+  "name": "nexagram-desktop",
+  "version": "1.0.0",
+  "description": "Nexagram для ПК",
+  "main": "main.js",
+  "author": "Nexagram",
+  "scripts": { "start": "electron .", "dist": "electron-builder --win" },
+  "devDependencies": { "electron": "^33.0.0", "electron-builder": "^25.1.8" },
+  "build": {
+    "appId": "site.nexagram.desktop",
+    "productName": "Nexagram",
+    "win": { "target": ["nsis", "portable"] },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
+    "files": ["main.js", "pc.html", "package.json"]
+  }
+}
