@@ -1,6 +1,6 @@
 {
   "name": "nexagram-desktop",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Nexagram для ПК",
   "main": "main.js",
   "author": "Nexagram",
@@ -9,8 +9,8 @@
   "build": {
     "appId": "site.nexagram.desktop",
     "productName": "Nexagram",
-    "win": { "target": ["nsis", "portable"] },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true },
-    "files": ["main.js", "pc.html", "package.json"]
+    "win": { "target": ["nsis", "portable"], "icon": "icon.ico" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "installerIcon": "icon.ico" },
+    "files": ["main.js", "pc.html", "icon.png", "package.json"]
   }
 }

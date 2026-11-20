@@ -1245,6 +1245,40 @@ img{content-visibility:auto}
 .story-item .story-av-wrap{border-radius:50%}
 .nav-text{font-size:11px;font-weight:600}
 </style>
+<style id="nx-scroll">
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(128,128,128,.32);border-radius:6px;transition:background .2s}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,149,0,.65)}
+.screen,.msgs,#m-area{scroll-behavior:smooth;overscroll-behavior:contain}
+@media (min-width:768px){.nav{left:12px!important;right:auto!important;width:calc(var(--side) - 24px)!important;border-top:1px solid rgba(255,255,255,.14)!important}}
+</style>
+<script>
+window.addEventListener('load',function(){
+  const order=['friends','chats','calls','profile'];
+  const orig=window.setTab; if(typeof orig!=='function')return;
+  window.setTab=function(tab){
+    const prev=order.findIndex(t=>{const e=document.getElementById(t+'-screen');return e&&e.classList.contains('active')});
+    orig(tab);
+    const el=document.getElementById(tab+'-screen'); const idx=order.indexOf(tab);
+    if(el&&prev>-1&&prev!==idx&&el.animate){
+      const dir=idx>prev?1:-1;
+      el.animate([{opacity:0,transform:'translateX('+dir*46+'px) scale(.98)'},{opacity:1,transform:'none'}],{duration:340,easing:'cubic-bezier(.22,1,.36,1)'});
+      el.querySelectorAll('.list-item').forEach((it,i)=>{if(i>9)return;it.animate([{opacity:0,transform:'translateX('+dir*24+'px)'},{opacity:1,transform:'none'}],{duration:320,delay:i*28,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'})});
+    }
+    try{navigator.vibrate&&navigator.vibrate(6)}catch(_){}
+  };
+  let sx=null,sy=0,tg=null;
+  document.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;tg=e.target},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(sx==null||innerWidth>=768)return; const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)<90||Math.abs(dy)>45||Math.abs(dx)<Math.abs(dy)*2.2)return;
+    if(tg&&tg.closest&&tg.closest('input,textarea,#chat-window,#profile-view-screen,.modal.active,[class*="stor"],[class*="Stor"]'))return;
+    const cur=order.findIndex(t=>{const e=document.getElementById(t+'-screen');return e&&e.classList.contains('active')});
+    const nx=cur+(dx<0?1:-1); if(cur>-1&&nx>=0&&nx<order.length)window.setTab(order[nx]);
+  },{passive:true});
+});
+</script>
 </head>
 <body>
 
